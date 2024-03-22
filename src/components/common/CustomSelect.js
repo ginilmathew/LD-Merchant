@@ -26,7 +26,7 @@ const CustomSelect = ({ fieldName,
     size,
     value,
     label,
-    defaultValue, view }) => {
+    defaultValue, readOnly }) => {
 
     const [open, setOpen] = useState(false)
 
@@ -55,8 +55,8 @@ const CustomSelect = ({ fieldName,
                         sm: 13,
                         xs: 12,
                     },
-                    fontFamily: 'Raleway, sans-serif',
-                    fontWeight: "bold"
+                    fontFamily: 'Outfit-Medium',
+         
                 }}>{`${fieldLabel}`}
 
                 </Typography>
@@ -66,7 +66,7 @@ const CustomSelect = ({ fieldName,
                     render={({ field: { onBlur, onChange } }) => (
                         <>
                             <Select
-                                readOnly={view}
+                                readOnly={readOnly}
                                 open={open}
                                 onClose={handleClose}
                                 onOpen={handleOpen}

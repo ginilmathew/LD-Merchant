@@ -15,7 +15,8 @@ const DataTable = ({ columns, rows, height, border, borderGrid, id, bg, rowheigh
             fontFamily: 'Raleway, sans-serif',
             fontWeight: 'bold',
             letterSpacing: '.5px',
-            border:'none'
+            border:'none',
+            height:'70vh'
         }}
 
         initialState={{

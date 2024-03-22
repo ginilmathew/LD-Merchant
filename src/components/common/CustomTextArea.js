@@ -8,6 +8,7 @@ const CustomTextArea = ({
   fieldLabel,
   placeholder,
   error,
+  readOnly
 
 }) => {
 
@@ -32,10 +33,12 @@ const CustomTextArea = ({
         </Stack>
 
         <Controller
+         
           name={fieldName}
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
             <textarea
+            readOnly={readOnly}
               rows="6"
               onChange={onChange}
               value={value}

@@ -8,7 +8,8 @@ import PostManagement from "../screen/PostManagement";
 import ProfileScreen from "../screen/Profile";
 import { PostEditView } from "../components/PostMangement/PostEditView";
 import Register from "../screen/auth/Register";
-import { ProtectedRoute } from "./protectedRoutes";
+import ProtectedRouter from "./protectedRoutes";
+
 
 
 
@@ -54,31 +55,31 @@ export const router = createBrowserRouter([
         path: "/",
         element: (
             <Suspense fallback={<CustomLoader text="Loading..." />}>
-                <ProtectedRoute>
-                    <HomeLayout/>
-                </ProtectedRoute>
+                <ProtectedRouter>
+                    <HomeLayout />
+                </ProtectedRouter>
             </Suspense>
         ),
         children: [
             {
                 index: true,
-                element: <ProtectedRoute> <PostManagement /></ProtectedRoute>,
+                element: <PostManagement />,
             },
             {
                 path: 'postadd',
-                element: <ProtectedRoute><PostEditView /></ProtectedRoute>,
+                element: <PostEditView />,
             },
             {
                 path: 'postEdit/:postId',
-                element: <ProtectedRoute><PostEditView /></ProtectedRoute>,
+                element: <PostEditView />,
             },
             {
                 path: 'postView/:postId',
-                element: <ProtectedRoute> <PostEditView /></ProtectedRoute>,
+                element: <PostEditView />,
             },
             {
                 path: 'profile',
-                element: <ProtectedRoute> <ProfileScreen /></ProtectedRoute>,
+                element: <ProfileScreen />,
             },
         ],
     }

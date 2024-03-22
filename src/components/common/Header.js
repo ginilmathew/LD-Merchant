@@ -16,8 +16,12 @@ import { menues } from './menus';
 import { COLOURS } from '../../assets/COLORS';
 import { useLocation, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import { userStore } from '../../store/user';
+import { IMG_URL } from '../../config';
 
 const Header = () => {
+  const { user, updateuser } = userStore((state) => state)
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -45,12 +49,14 @@ const Header = () => {
   }, [navigate]);
 
   const Logout = useCallback(() => {
+    updateuser(null)
+    localStorage.clear();
     navigate('/login', { replace: true });
     setAnchorEl(null);
   }, [navigate]);
 
   return (
-    <Box sx={{ height: 80, width: '100%', background: COLOURS.primary,position:'fixed',zIndex:100 }}>
+    <Box sx={{ height: 80, width: '100%', background: COLOURS.primary, position: 'fixed', zIndex: 100 }}>
       <Grid container justifyContent="space-between" alignItems="center" sx={{ px: 5, height: '100%' }}>
         {/* Left side (20%) */}
         <Grid item xs={2}>
@@ -103,7 +109,7 @@ const Header = () => {
             <Hidden mdDown>
               <Tooltip title="Click here">
                 <IconButton onClick={handleIconButton} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" />
+                  <Avatar alt="profile" src={IMG_URL + user?.image} />
                 </IconButton>
               </Tooltip>
             </Hidden>
@@ -130,11 +136,11 @@ const Header = () => {
               <MenuItem sx={{ background: COLOURS.menuItemBox }}>
                 <Box display={'flex'} justifyContent={'space-between'} gap={5} alignItems={'center'} width={150}>
                   <Typography sx={{ fontSize: 12, letterSpacing: 0.79, color: COLOURS.menuText, fontFamily: 'Outfit-Light' }}>{'Admin'}</Typography>
-                  <Typography sx={{ fontSize: 16, color: COLOURS.textColor, fontFamily: 'Outfit-Medium' }}>{'Ginil'}</Typography>
+                  <Typography sx={{ fontSize: 16, color: COLOURS.textColor, fontFamily: 'Outfit-Medium' }}>{(user?.name || user?.user_name)}</Typography>
                 </Box>
               </MenuItem>
-            
-              
+
+
               <MenuItem sx={{ color: COLOURS.secondary, fontSize: 16, fontFamily: 'Outfit-Medium', letterSpacing: 0.79, background: COLOURS.menuItemBox }} onClick={Logout}>
                 {'Logout'}
               </MenuItem>

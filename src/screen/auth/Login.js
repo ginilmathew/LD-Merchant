@@ -13,6 +13,11 @@ import CustomButton from '../../components/common/CustomButton';
 import LoginBackground from '../../components/login/LoginBackground';
 import LoginLogo from '../../components/login/LoginLogo';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { userStore } from '../../store/user';
+import { PostLogin } from '../../api/login';
+import { useSnackbar } from '../../hooks/SnackBarHook';
+import CustomBackDrop from '../../components/common/CustomBackDrop';
 
 
 
@@ -21,8 +26,14 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
 
     const navigate = useNavigate();
-    const schema = object().shape({
+    const updateUser = userStore((state) => state.updateuser)
+    const showSnackbar = useSnackbar();
 
+    const schema = object().shape({
+        email: yup.string().email().required('Email is required'),
+        password: yup.string()
+            .required('No password provided.')
+            .min(6, 'Password is too short')
     });
 
     const {
@@ -39,12 +50,35 @@ const Login = () => {
     const theme = useTheme();
     const isMdScreen = useMediaQuery(theme.breakpoints.up('md'));
 
+    const { mutate, isLoading, error } = useMutation({
+        mutationFn: PostLogin,
+        onSuccess: async (data) => {
+            updateUser(data?.data?.data);
+            localStorage.setItem('tokenAxios', data?.data?.accessToken)
+            localStorage.setItem('userData', data?.data?.data)
+            // setRole(data?.data?.data?.role)
+            // userStore(data?.data?.data)
+            showSnackbar('Login succesfully', 'success');
+            navigate('/')
+        },
+        onError: (error, variables, context) => {
+            showSnackbar(error?.message, 'error');
+        },
+        // onSettled: async () => {
+        //     console.log("I'm second!")
+        // },
+    })
+
+
+
     const NavigationToForgetPassword = useCallback(() => {
         navigate('/forgetpassword')
-    }, [])
-    const NavigationTohome = useCallback(() => {
-        navigate('/')
-    }, [])
+    }, []);
+
+    const NavigationTohome = useCallback((data) => {
+        mutate(data)
+    }, [navigate]);
+
     const NavigationToRegiser = useCallback(() => {
         navigate('/register')
     }, [])
@@ -88,15 +122,15 @@ const Login = () => {
                             <CustomLoginInput
                                 type={'password'}
                                 control={control}
-                                error={errors.email}
-                                fieldName="email"
+                                error={errors.password}
+                                fieldName="password"
                                 placeholder={"Password"}
                                 keyValue={'email'}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <CustomButton
-                                onClick={NavigationTohome}
+                                onClick={handleSubmit(NavigationTohome)}
                                 width={'100%'}
                                 label={'Login'}
                                 isIcon={false} />
@@ -104,15 +138,16 @@ const Login = () => {
                         <Grid item xs={12} >
                             <Typography sx={{ color: COLOURS.textColor, display: 'flex', justifyContent: 'flex-end', fontSize: 18, fontFamily: 'Outfit-Medium', letterSpacing: 0.72, cursor: 'pointer' }} onClick={NavigationToForgetPassword}>Forgot Password?</Typography>
                         </Grid>
-                    
+
                         <Grid item xs={12} mt={10}>
                             <Typography sx={{ color: COLOURS.title, display: 'flex', justifyContent: 'center', fontSize: 18, fontFamily: 'Outfit-Medium', letterSpacing: 0.72, cursor: 'pointer' }} >Don't Have An Account Yet?</Typography>
                             <Typography sx={{ color: COLOURS.textColor, display: 'flex', justifyContent: 'center', fontSize: 22, fontFamily: 'Outfit-Medium', letterSpacing: 0.72, cursor: 'pointer' }} onClick={NavigationToRegiser}>REGISTER HERE</Typography>
                         </Grid>
-                        
+
                     </Box>
                 </Grid>
             </Grid>
+            <CustomBackDrop loading={isLoading}/>
         </Grid>
     );
 };

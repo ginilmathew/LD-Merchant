@@ -6,6 +6,7 @@ import { Avatar, Box, FormGroup, styled, Typography } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import dayjs from 'dayjs';
+import { COLOURS } from '../../assets/COLORS';
 
 
 
@@ -22,7 +23,18 @@ const CustomDatePicker = ({
   return (
     <>
       <FormGroup>
-
+      <Typography letterSpacing={.5} px={'3px'} mb={'1px'}
+                    sx={{
+                        fontSize: {
+                            lg: 16,
+                            md: 14,
+                            sm: 12,
+                            xs: 11,
+                        },
+                        fontFamily:'Outfit-Medium' ,
+                    }}
+                >{fieldLabel}
+                </Typography>
         <Controller
           name={ fieldName }
           control={ control }
@@ -30,8 +42,9 @@ const CustomDatePicker = ({
             <LocalizationProvider dateAdapter={ AdapterMoment }>
               <DatePicker
                 // disablePast
-                label={ fieldLabel }
+                // label={ fieldLabel }
                 slotProps={{
+                
                   actionBar: {
                     actions: ['clear']
                   }
@@ -39,15 +52,19 @@ const CustomDatePicker = ({
                 format='DD/MM/YYYY'
                 disabled={ disabled }
                 sx={ {
+            
                   "& .MuiInputBase-input": {
-                    height: "13px",
+                    height: "10px",
+                    background: COLOURS.table,
+                    border:'none',
                     borderRadius: '10px'
                     // Set your height here.
                   },
-                  backgroundColor: "#fff",
+              
 
                 } }
 
+           
                 value={ values ? values : value }
                 onChange={ changeValue ? (e) => changeValue(e) : onChange }
               />

@@ -4,10 +4,10 @@ import { COLOURS } from '../../assets/COLORS';
 import CutomSearch from './CustomSearch';
 import CustomButton from './CustomButton';
 
-const CustomHeading = ({ label, isEnable, buttonLabel ,onClick}) => {
+const CustomHeading = ({ label, isEnable, buttonLabel ,onClick,setState}) => {
   return (
     <Grid container mt={8} spacing={2} justifyContent="space-between" alignItems="center">
-      <Grid item xs={12} xl={9} lg={9} md={9} sm={12}>
+      <Grid item xs={12} xl={8} lg={8} md={8} sm={12}>
         <Typography sx={{
           fontSize: {
             lg: 30,
@@ -18,10 +18,10 @@ const CustomHeading = ({ label, isEnable, buttonLabel ,onClick}) => {
         }}>{label}</Typography>
       </Grid>
       {!isEnable && (
-        <Grid item xs={12} sm={12} xl={3} lg={3} md={3}>
+        <Grid item xs={12} sm={12} xl={4} lg={4} md={4}>
           <Box display="flex" justifyContent="flex-end" gap={2} flexDirection={{md:'row',lg:'row',xl:'row',sm:'column',xs:'column'}}>
           <CustomButton label={buttonLabel}  width={180} onClick={onClick}/> {/* Add the button component here */}
-            <CutomSearch />
+            <CutomSearch setState={setState}/>
             
           </Box>
         </Grid>
