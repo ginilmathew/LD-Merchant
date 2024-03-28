@@ -32,6 +32,7 @@ const ProfileScreen = () => {
     const [coverPreview, setcoverPreview] = useState(null);
     const [imagefileCover, setImagefileCover] = useState(null);
     const [dob, setDob] = useState(null)
+    const [exstablished, setExtablished] = useState(null)
 
 
     const { data, isError, isLoading, isFetched, refetch } = useQuery(
@@ -44,19 +45,19 @@ const ProfileScreen = () => {
 
     useEffect(() => {
         if (data?.data?.data) {
-
             let payload = data?.data?.data;
             const newObject = { ...payload["company"], ...payload };
             delete newObject["company"];
-            setDob(moment(newObject?.dob))
+            setDob(newObject?.dob ? moment(newObject?.dob) : null)
+            setValue('id',newObject?.id)
+            setExtablished(newObject?.established_date ? moment(newObject?.established_date) : null)
             reset(newObject);
             setImagePreview(IMG_URL + newObject?.image);
             setcompanyLogoPreview(IMG_URL + newObject?.logo)
             setcoverPreview(IMG_URL + newObject?.cover_image)
-
-
         }
     }, [data?.data?.data])
+
 
 
 
@@ -119,6 +120,13 @@ const ProfileScreen = () => {
     }
 
 
+    const onChangeExtablished = (value) => {
+        setExtablished(value)
+        setValue('established_date', value)
+        setError('established_date', { message: '' })
+    }
+
+
     const imageUploder = (file) => {
         if (file.size <= 1000000) {
             setImagefile(file)
@@ -174,16 +182,16 @@ const ProfileScreen = () => {
         formData.append('email', data?.email);
         formData.append('mobile', data?.mobile);
         formData.append('dob', data?.dob ? moment(data?.dob).format('YYYY-MM-DD') : null);
-        formData.append('id', data?.data?.data?.id);
+        formData.append('id', data?.id);
         formData.append('company_name', data?.name)
         formData.append('designation', data?.designation)
-        formData.append('established_date', data?.established_date)
+        formData.append('established_date', data?.established_date ? moment(data?.established_date).format('YYYY-MM-DD') : null)
         formData.append('representative_name', data?.representative_name)
-        formData.append('facebook_link', data?.facebook_link)
-        formData.append('tiktok_link', data?.tiktok_link)
-        formData.append('instagram_link', data?.instagram_link)
-        formData.append('linkedin_link', data?.linkedin_link);
-        formData.append('x_link', data?.x_link)
+        formData.append('facebook_link', data?.facebook_link ?data?.facebook_link : '')
+        formData.append('tiktok_link', data?.tiktok_link ? data?.tiktok_link : '')
+        formData.append('instagram_link', data?.instagram_link ? data?.instagram_link : '')
+        formData.append('linkedin_link', data?.linkedin_link ? data?.linkedin_link : '');
+        formData.append('x_link', data?.x_link ? data?.x_link : null)
         mutateProfile(formData);
     };
 
@@ -325,13 +333,15 @@ const ProfileScreen = () => {
                         />
                     </Grid>
                     <Grid item xs={12} lg={3} xl={3} md={6} sm={6}>
-                        <CustomInput
-                            readonly={true}
-                            control={control}
-                            error={errors.established_date}
-                            fieldName="established_date"
-                            fieldLabel="Established Date"
-                        />
+                    <CustomDatePicker
+                                fieldName='established_date'
+                                control={control}
+                                error={errors.established_date}
+                                past={true}
+                                fieldLabel={'Established Date'}
+                                values={exstablished}
+                                changeValue={(date) => onChangeExtablished(date)}
+                            />
                     </Grid>
                     <Grid item xs={12} lg={3} xl={3} md={6} sm={6}>
                         <CustomInput

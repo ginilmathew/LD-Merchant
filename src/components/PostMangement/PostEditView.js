@@ -79,7 +79,7 @@ export const PostEditView = () => {
 
 
     useEffect(() => {
-        if (postShowData?.data?.data) {
+        if ((postShowData?.data?.data && postId)) {
             let key = postShowData?.data?.data;
             setValue('deadline', moment(key?.deadline))
             setValue('type', key.type)
@@ -95,7 +95,7 @@ export const PostEditView = () => {
             setcoverPreview(IMG_URL + key.price_image)
         }
 
-    }, [postShowData?.data?.data])
+    }, [postShowData?.data?.data,postId])
 
     const ImageUploderPost = (file) => {
         console.log({ file }, 'post')
@@ -132,7 +132,7 @@ export const PostEditView = () => {
     const { mutate, isLoading: settingLoading, error } = useMutation({
         mutationFn: postId ? UpdatePost : CreatePost,
         onSuccess: async (data) => {
-
+            reset()
             showSnackbar(postId ? 'Updated succesfully!' : 'Created succesfully!', 'success');
             navigate(-1)
 
@@ -150,6 +150,8 @@ export const PostEditView = () => {
         setTime(value)
         setError('deadline', { message: "" })
     }
+
+
 
 
     const onChangeButton = (e) => {
@@ -228,7 +230,7 @@ export const PostEditView = () => {
                     </Grid>
                     <Grid item xl={2} lg={2} md={1} sm={4} xs={12}>
                         <CustomInput
-                            readonly={state === 'View' ? true : false}
+                            readonly={true}
                             control={control}
                             error={errors.amount}
                             fieldName="amount"

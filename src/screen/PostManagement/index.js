@@ -134,7 +134,7 @@ const PostManagement = () => {
 
             field: 'Action',
             headerName: 'Action',
-            width: 250,
+            width: 300,
             headerAlign: 'center',
             align: 'center',
             sortable: false,

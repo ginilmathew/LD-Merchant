@@ -134,13 +134,11 @@ const Header = () => {
               sx={{ borderRadius: 10 }}
             >
               <MenuItem sx={{ background: COLOURS.menuItemBox }}>
-                <Box display={'flex'} justifyContent={'space-between'} gap={5} alignItems={'center'} width={150}>
-                  <Typography sx={{ fontSize: 12, letterSpacing: 0.79, color: COLOURS.menuText, fontFamily: 'Outfit-Light' }}>{'Admin'}</Typography>
+                <Box display={'flex'} justifyContent={'space-between'} gap={5} alignItems={'center'} width={200}>
+                  <Typography sx={{ fontSize: 12, letterSpacing: 0.79, color: COLOURS.menuText, fontFamily: 'Outfit-Light' }}>{'Merchant'}</Typography>
                   <Typography sx={{ fontSize: 16, color: COLOURS.textColor, fontFamily: 'Outfit-Medium' }}>{(user?.name || user?.user_name)}</Typography>
                 </Box>
               </MenuItem>
-
-
               <MenuItem sx={{ color: COLOURS.secondary, fontSize: 16, fontFamily: 'Outfit-Medium', letterSpacing: 0.79, background: COLOURS.menuItemBox }} onClick={Logout}>
                 {'Logout'}
               </MenuItem>
